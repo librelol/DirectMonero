@@ -9,6 +9,8 @@ services:
       - frontend_network
     environment:
       - SERVICE_FQDN_DIRECTMONEROAPI_5000=/api
+      - DATABASE_URL=postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@database:5432/directmonero
+
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 30s
@@ -27,9 +29,9 @@ services:
   database:
     image: postgres:17
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: ${SERVICE_USER_POSTGRES}
+      POSTGRES_PASSWORD: ${SERVICE_PASSWORD_POSTGRES}
+      POSTGRES_DB: directmonero
     ports:
       - "5432:5432"
     volumes:
