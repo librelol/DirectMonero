@@ -5,7 +5,7 @@ services:
     build:
       context: ./src/api
     environment:
-      - SERVICE_FQDN_DIRECTMONEROAPI_5000=/api
+      - SERVICE_FQDN_DIRECTMONEROAPI_5000=/api/v1
       - DATABASE_URL=postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@database:5432/directmonero
 
     healthcheck:
