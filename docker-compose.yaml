@@ -6,7 +6,7 @@ services:
       context: ./src/api
     environment:
       - SERVICE_FQDN_DIRECTMONEROAPI_5000
-      - DATABASE_URL=postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@database:5432/directmonero
+      - DATABASE_URL=mongodb://${SERVICE_USER_MONGO}:${SERVICE_PASSWORD_MONGO}@database:27017/directmonero
     depends_on:
       database:
         condition: service_healthy
@@ -32,22 +32,22 @@ services:
       retries: 5
 
   database:
-    image: postgres:17
+    image: mongo:6
     environment:
-      POSTGRES_USER: ${SERVICE_USER_POSTGRES}
-      POSTGRES_PASSWORD: ${SERVICE_PASSWORD_POSTGRES}
-      POSTGRES_DB: directmonero
+      MONGO_INITDB_ROOT_USERNAME: ${SERVICE_USER_MONGO}
+      MONGO_INITDB_ROOT_PASSWORD: ${SERVICE_PASSWORD_MONGO}
+      MONGO_INITDB_DATABASE: directmonero
     ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:27017:27017"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongo_data:/data/db
     healthcheck:
       test:
         - CMD-SHELL
-        - 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}'
+        - 'echo "db.stats()" | mongo --username $${MONGO_INITDB_ROOT_USERNAME} --password $${MONGO_INITDB_ROOT_PASSWORD} --quiet'
       interval: 5s
       timeout: 20s
       retries: 10
 
 volumes:
-  postgres_data:
+  mongo_data:
