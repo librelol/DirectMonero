@@ -1,0 +1,20 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build the API Docker image
+      run: docker build ./src/api --file ./src/api/Dockerfile --tag direct-monero-api:$(date +%s)
+
+    - name: Build the Frontend Docker image
+      run: docker build ./src/frontend --file ./src/frontend/Dockerfile --tag direct-monero-api:$(date +%s)
