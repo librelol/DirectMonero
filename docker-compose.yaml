@@ -7,6 +7,9 @@ services:
     environment:
       - SERVICE_FQDN_DIRECTMONEROAPI_5000
       - DATABASE_URL=postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@database:5432/directmonero
+    depends_on:
+      database:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/v1/health"]
       interval: 30s
@@ -19,6 +22,9 @@ services:
     environment:
       - SERVICE_FQDN_DIRECTMONEROFRONTEND_3030
       - VUE_APP_API_ADDRESS=${SERVICE_FQDN_DIRECTMONEROAPI_5000}
+    depends_on:
+      api:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3030"]
       interval: 30s
