@@ -42,9 +42,7 @@ services:
     volumes:
       - mongo_data:/data/db
     healthcheck:
-      test:
-        - CMD-SHELL
-        - 'echo "db.stats()" | mongo --username $${MONGO_INITDB_ROOT_USERNAME} --password $${MONGO_INITDB_ROOT_PASSWORD} --quiet'
+      test: ["CMD", "mongo", "--username", "$$MONGO_INITDB_ROOT_USERNAME", "--password", "$$MONGO_INITDB_ROOT_PASSWORD", "--eval", "db.adminCommand('ping')"]
       interval: 5s
       timeout: 20s
       retries: 10
