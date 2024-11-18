@@ -7,6 +7,8 @@ services:
     networks:
       - api_network
       - frontend_network
+    environment:
+      - DATABASE_URL=mongodb://mongo:mongo@mongo:27017/directmonero
 
   frontend:
     build:
@@ -19,15 +21,15 @@ services:
       - VUE_APP_API_ADDRESS=http://localhost:5000
 
   database:
-    image: postgres:17
+    image: mongo:8
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+      MONGO_INITDB_DATABASE: directmonero
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongo_data:/data/db
     networks:
       - api_network
 
@@ -38,4 +40,4 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  mongo_data:
