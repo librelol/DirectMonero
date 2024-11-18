@@ -4,19 +4,19 @@ services:
   api:
     build:
       context: ./src/api
-    ports:
-      - "5000:5000"
     networks:
       - api_network
       - frontend_network
+    environment:
+      - SERVICE_FQDN_DIRECTMONEROAPI_5000=/api
 
   frontend:
     build:
       context: ./src/frontend
-    ports:
-      - "3000:3000"
     networks:
       - frontend_network
+    environment:
+      - SERVICE_FQDN_DIRECTMONEROFRONTEND_3030
 
   database:
     image: postgres:17
