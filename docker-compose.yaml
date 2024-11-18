@@ -9,6 +9,11 @@ services:
       - frontend_network
     environment:
       - SERVICE_FQDN_DIRECTMONEROAPI_5000=/api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   frontend:
     build:
@@ -17,6 +22,7 @@ services:
       - frontend_network
     environment:
       - SERVICE_FQDN_DIRECTMONEROFRONTEND_3030
+      - VUE_APP_API_ADDRESS=${SERVICE_FQDN_DIRECTMONEROAPI_5000}
 
   database:
     image: postgres:17
