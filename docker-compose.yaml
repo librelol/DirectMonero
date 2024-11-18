@@ -4,9 +4,6 @@ services:
   api:
     build:
       context: ./src/api
-    networks:
-      - api_network
-      - frontend_network
     environment:
       - SERVICE_FQDN_DIRECTMONEROAPI_5000=/api
       - DATABASE_URL=postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@database:5432/directmonero
@@ -20,8 +17,6 @@ services:
   frontend:
     build:
       context: ./src/frontend
-    networks:
-      - frontend_network
     environment:
       - SERVICE_FQDN_DIRECTMONEROFRONTEND_3030
       - VUE_APP_API_ADDRESS=${SERVICE_FQDN_DIRECTMONEROAPI_5000}
@@ -36,14 +31,6 @@ services:
       - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - api_network
-
-networks:
-  api_network:
-    driver: bridge
-  frontend_network:
-    driver: bridge
 
 volumes:
   postgres_data:
