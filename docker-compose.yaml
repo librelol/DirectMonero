@@ -32,7 +32,7 @@ services:
       retries: 5
 
   database:
-    image: postgres:16
+    image: postgres:17
     environment:
       POSTGRES_USER: ${SERVICE_USER_POSTGRES}
       POSTGRES_PASSWORD: ${SERVICE_PASSWORD_POSTGRES}
