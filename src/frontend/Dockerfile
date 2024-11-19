@@ -1,5 +1,5 @@
 # Step 1: Use the official Node.js image as a build environment
-FROM node:latest AS build-stage
+FROM node:lts-alpine AS build-stage
 
 # Step 2: Set the working directory
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Step 7: Use Nginx to serve the application
-FROM nginx:alpine
+FROM nginx:lts-alpine
 
 # Step 8: Copy the built files from the previous stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
