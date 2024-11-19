@@ -20,9 +20,10 @@ services:
   frontend:
     build:
       context: ./src/frontend
+      args:
+        VITE_APP_API_ADDRESS: ${SERVICE_FQDN_DIRECTMONEROAPI_5000}
     environment:
       - SERVICE_FQDN_DIRECTMONEROFRONTEND_3030
-      - VITE_APP_API_ADDRESS=${SERVICE_FQDN_DIRECTMONEROAPI_5000}
     depends_on:
       api:
         condition: service_healthy
