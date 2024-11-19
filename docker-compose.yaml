@@ -6,6 +6,7 @@ services:
       context: ./src/api
     environment:
       - SERVICE_FQDN_DIRECTMONEROAPI_5000
+      - JWT_SECRET=${SERVICE_PASSWORD_JWTSECRET}
       - DATABASE_URL=postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@database:5432/directmonero
     depends_on:
       database:
