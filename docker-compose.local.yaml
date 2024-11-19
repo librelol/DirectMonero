@@ -9,7 +9,7 @@ services:
       - frontend_network
     environment:
       - JWT_SECRET=secret
-      - DATABASE_URL=postgresql://postgres:postgres@database:5432/directmonero
+      - DATABASE_URL=mongodb://database:27017/directmonero
 
   frontend:
     build:
@@ -22,15 +22,11 @@ services:
       - VUE_APP_API_ADDRESS=http://localhost:5000
 
   database:
-    image: postgres:17
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: directmonero
+    image: mongo:8
     ports:
-      - "27017:5432"
+      - "27017:27017"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongo_data:/data/db
     networks:
       - api_network
 
@@ -41,4 +37,4 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  mongo_data:
