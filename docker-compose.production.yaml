@@ -2,15 +2,15 @@ version: '3.8'
 
 services:
   api:
-    build:
-      context: ./src/api
+    image: directmonero-api:latest
     environment:
-      - SERVICE_FQDN_DIRECTMONEROAPI_5000
-      - JWT_SECRET=${SERVICE_PASSWORD_JWTSECRET}
+      - JWT_SECRET=ienihwjeh9039h293ju32hj3h
       - DATABASE_URL=mongodb://database:27017/directmonero
     depends_on:
       database:
         condition: service_healthy
+    ports:
+      - "5000:5000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/v1/health"]
       interval: 30s
@@ -18,15 +18,14 @@ services:
       retries: 5
 
   frontend:
-    build:
-      context: ./src/frontend
-      args:
-        VITE_APP_API_ADDRESS: ${SERVICE_FQDN_DIRECTMONEROAPI_5000}
+    image: directmonero-frontend:latest
     environment:
-      - SERVICE_FQDN_DIRECTMONEROFRONTEND_3030
+      - VITE_APP_API_ADDRESS=http://localhost:5000
     depends_on:
       api:
         condition: service_healthy
+    ports:
+      - "3030:3030"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3030"]
       interval: 30s
