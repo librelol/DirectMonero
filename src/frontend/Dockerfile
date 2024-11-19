@@ -14,8 +14,6 @@ RUN npm install
 COPY . .
 
 # Step 6: Build the application with environment variables
-ARG VITE_APP_API_ADDRESS
-ENV VITE_APP_API_ADDRESS=$VITE_APP_API_ADDRESS
 RUN npm run build
 
 # Step 7: Use Nginx to serve the application

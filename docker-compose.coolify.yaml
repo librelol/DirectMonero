@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   api:
     image: directmonero-api:latest
@@ -7,9 +5,6 @@ services:
       - SERVICE_FQDN_DIRECTMONEROAPI_5000
       - JWT_SECRET=${SERVICE_PASSWORD_JWTSECRET}
       - DATABASE_URL=mongodb://database:27017/directmonero
-    depends_on:
-      database:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/v1/health"]
       interval: 30s
@@ -20,7 +15,7 @@ services:
     image: directmonero-frontend:latest
     environment:
       - SERVICE_FQDN_DIRECTMONEROFRONTEND_3030
-      - VITE_APP_API_ADDRESS=${SERVICE_FQDN_DIRECTMONEROAPI_5000}
+      - API_ADDRESS=${SERVICE_FQDN_DIRECTMONEROAPI_5000}
     depends_on:
       api:
         condition: service_healthy
@@ -36,11 +31,6 @@ services:
       - "127.0.0.1:27017:27017"
     volumes:
       - mongo_data:/data/db
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
 
 volumes:
   mongo_data:

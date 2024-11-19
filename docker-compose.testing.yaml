@@ -10,18 +10,29 @@ services:
     environment:
       - JWT_SECRET=secret
       - DATABASE_URL=mongodb://database:27017/directmonero
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:5000/api/v1/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
 
   frontend:
     build:
       context: ./src/frontend
-      args:
-        VITE_APP_API_ADDRESS: http://localhost:5000
     ports:
       - "3030:3030"
     networks:
       - frontend_network
     environment:
-      - VITE_APP_API_ADDRESS=http://localhost:5000
+      - API_ADDRESS=http://localhost:5000
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3030"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   database:
     image: mongo:8
