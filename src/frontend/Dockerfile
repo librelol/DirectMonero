@@ -13,11 +13,13 @@ RUN npm install
 # Step 5: Copy the rest of the application code
 COPY . .
 
-# Step 6: Build the application
+# Step 6: Build the application with environment variables
+ARG VITE_APP_API_ADDRESS
+ENV VITE_APP_API_ADDRESS=$VITE_APP_API_ADDRESS
 RUN npm run build
 
 # Step 7: Use Nginx to serve the application
-FROM nginx:lts-alpine
+FROM nginx:alpine
 
 # Step 8: Copy the built files from the previous stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html

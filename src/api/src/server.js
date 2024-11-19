@@ -13,15 +13,14 @@ connectDB();
 
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
-
+app.use('/api/v1/auth', authRoutes);
+app.get('/api/v1/health', (req, res) => {
+    res.send('OK');
+});
 app.get('/api/v1/', (req, res) => {
     res.send('This isn\'t the frontend, how did you get here!');
 });
 
-app.get('/api/v1/health', (req, res) => {
-    res.send('OK');
-});
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

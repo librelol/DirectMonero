@@ -15,11 +15,11 @@ services:
     build:
       context: ./src/frontend
     ports:
-      - "3000:3000"
+      - "3030:3030"
     networks:
       - frontend_network
     environment:
-      - VUE_APP_API_ADDRESS=http://localhost:5000
+      - VITE_APP_API_ADDRESS=http://localhost:5000
 
   database:
     image: mongo:8
